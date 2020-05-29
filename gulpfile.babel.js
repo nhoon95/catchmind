@@ -14,7 +14,7 @@ const paths = {
     src: "assets/scss/style.scss",
     dest: "src/static/styles",
     //다 계속 보고 있고 싶으니까
-    watch: "/assets/scss/**/*.scss",
+    watch: "assets/scss/**/*.scss",
   },
   js: {
     src: "assets/js/main.js",
@@ -58,5 +58,7 @@ const watchFiles = () => {
 };
 
 const dev = gulp.series(clean, styles, js, watchFiles);
+
+export const build = gulp.series(clean, styles, js);
 
 export default dev;

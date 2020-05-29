@@ -6,6 +6,15 @@ html(lang="en")
         link(rel="stylesheet", href="/styles/style.css")
         title Catch Mind
     body
-        h1 me
+        .loginBox
+            form#jsLogin
+                input(placeholder="what is your nickname", type="text")
+        .gameContainer#jsGame
+            .chat
+                ul.chat__messages#jsMessages
+                form.chat__form#jsSendMsg
+                    input(placeholder="Write a message", type="type")
+        script.
+            window.events = !{events}
         script(src="/socket.io/socket.io.js")
         script(src="/js/main.js")
