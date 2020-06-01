@@ -1,5 +1,7 @@
-//백엔드
+//프론트엔드
 import { handleNewUser, handleDisconnect } from "./notifications";
+import { handleNewMsg } from "./chat";
+import { handleBeginPath, handleStrokePath } from "./paint";
 
 let socket = null;
 
@@ -14,4 +16,8 @@ export const initSocket = (aSocket) => {
   updateSocket(aSocket);
   aSocket.on(events.newUser, handleNewUser);
   aSocket.on(events.disconnect, handleDisconnect);
+  //newMsg이벤트를 받는거
+  aSocket.on(events.newMsg, handleNewMsg);
+  aSocket.on(events.beganPath, handleBeginPath);
+  aSocket.on(events.strokedPath, handleStrokePath);
 };
