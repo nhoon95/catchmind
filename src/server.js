@@ -23,7 +23,7 @@ const handleListening = () => {
 
 //http위에 서버를 하나 더 올리느 방법
 const server = app.listen(PORT, handleListening);
-const io = socketIO.listen(server);
+export const io = socketIO.listen(server);
 //이건 백엔드, 프론트엔드도 연결해줘야댐
 //이벤트를 주고 받음
-io.on("connection", (socket) => socketController(socket));
+io.on("connection", (socket) => socketController(socket, io));

@@ -3,3 +3,4 @@ import "./notifications";
 import "./sockets";
 import "./chat";
 import "./paint";
+import "./player";

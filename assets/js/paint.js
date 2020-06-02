@@ -77,9 +77,19 @@ function handleColor(event) {
   ctx.fillStyle = color;
 }
 
+const fill = (color = null) => {
+  let currentColor = ctx.fillStyle;
+  if (color !== null) {
+    ctx.fillStyle = color;
+  }
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = currentColor;
+};
+
 function handelCanvasClick() {
   if (filling) {
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    fill();
+    getSocket().emit(window.events.fill, { color: ctx.fillStyle });
   }
 }
 
@@ -133,3 +143,4 @@ if (saveBtn) {
 
 export const handleBeginPath = ({ x, y }) => beginPath(x, y);
 export const handleStrokePath = ({ x, y, color }) => strokePath(x, y, color);
+export const handleFilled = ({ color }) => fill(color);
