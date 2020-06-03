@@ -1,13 +1,14 @@
 import events from "./events";
 import { io } from "./server";
-import { chooseWord } from "../assets/js/words";
+import { chooseWord } from "./words";
 
-//이렇게 해주는 이유가 뭘까?
+//이렇게 해주는 이유가 뭘까? -> 들어왔다 나가면 지워줘야하니까 ""공백으로 나두는 거임
 let sockets = [];
 let inprogress = false;
 let word = null;
+let leader = null;
 
-const chooseLeader = () => sockets[Math.ceil(Math.random() * sockets.length)];
+const chooseLeader = () => sockets[Math.floor(Math.random() * sockets.length)];
 
 const socketController = (socket) => {
   const broadcast = (event, data) => socket.broadcast.emit(event, data);
@@ -16,8 +17,12 @@ const socketController = (socket) => {
   const startGame = () => {
     if (inprogress === false) {
       inprogress = true;
-      const leader = chooseLeader();
+      leader = chooseLeader();
       word = chooseWord();
+      setTimeout(() => {
+        superBroadcast(events.gameStarted),
+          io.to(leader.id).emit(events.leaderNotifi, { word });
+      }, 2000);
     }
   };
 
@@ -26,11 +31,26 @@ const socketController = (socket) => {
     sockets.push({ id: socket.id, points: 0, nickname: nickname });
     broadcast(events.newUser, { nickname });
     sendMsgPlayer();
+    if (sockets.length === 2) {
+      startGame();
+    }
   });
+
+  const endGame = () => {
+    inprogress = false;
+    superBroadcast(events.gameEnded);
+  };
 
   socket.on(events.disconnect, ({ nickname }) => {
     //소켓츠에 없는 닉네임을 지우는거
     sockets = sockets.filter((aSocket) => aSocket.id !== socket.id);
+    if (sockets.length === 1) {
+      endGame();
+    } else if (leader) {
+      if (socket.id === leader.id) {
+        endGame();
+      }
+    }
     broadcast(events.disconnected, { nickname: socket.nickname });
     sendMsgPlayer();
   });

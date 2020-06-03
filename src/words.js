@@ -63,4 +63,4 @@ const words = [
   "wrench",
 ];
 
-export const chooseWord = () => words[Math.ceil(Math.random) * words.length];
+export const chooseWord = () => words[Math.ceil(Math.random() * words.length)];

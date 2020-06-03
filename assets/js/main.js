@@ -4,3 +4,4 @@ import "./sockets";
 import "./chat";
 import "./paint";
 import "./player";
+import "../../src/words";

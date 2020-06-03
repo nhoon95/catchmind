@@ -1,6 +1,7 @@
 import { getSocket } from "./sockets";
 
 const canvas = document.getElementById("jsCanvas");
+const controls = document.getElementById("jsControls");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
@@ -114,16 +115,6 @@ function handleSaveBtn(event) {
   link.click();
 }
 
-if (canvas) {
-  canvas.addEventListener("mousemove", onMouseMove);
-  canvas.addEventListener("mousedown", startPainting);
-  canvas.addEventListener("mouseup", stopPainting);
-  canvas.addEventListener("mouseleave", stopPainting);
-  canvas.addEventListener("click", handelCanvasClick);
-  //to protect click of right mouse
-  canvas.addEventListener("contextmenu", handleBlock);
-}
-
 function handleRange(event) {
   const size = event.target.value;
   ctx.lineWidth = size;
@@ -144,3 +135,29 @@ if (saveBtn) {
 export const handleBeginPath = ({ x, y }) => beginPath(x, y);
 export const handleStrokePath = ({ x, y, color }) => strokePath(x, y, color);
 export const handleFilled = ({ color }) => fill(color);
+
+export const disableCanvas = () => {
+  canvas.removeEventListener("mousemove", onMouseMove);
+  canvas.removeEventListener("mousedown", startPainting);
+  canvas.removeEventListener("mouseup", stopPainting);
+  canvas.removeEventListener("mouseleave", stopPainting);
+  canvas.removeEventListener("click", handelCanvasClick);
+};
+
+export const enableCanvas = () => {
+  canvas.addEventListener("mousemove", onMouseMove);
+  canvas.addEventListener("mousedown", startPainting);
+  canvas.addEventListener("mouseup", stopPainting);
+  canvas.addEventListener("mouseleave", stopPainting);
+  canvas.addEventListener("click", handelCanvasClick);
+};
+
+export const hideControls = () => (controls.style.opacity = 0);
+export const showControls = () => (controls.style.opacity = 1);
+export const resetBoard = () => fill("#fff");
+
+if (canvas) {
+  //to protect click of right mouse
+  canvas.addEventListener("contextmenu", handleBlock);
+  hideControls();
+}
