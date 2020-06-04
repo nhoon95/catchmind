@@ -6,7 +6,7 @@ const sendMsg = document.getElementById("jsSendMsg");
 const appenMsg = (text, nickname) => {
   const li = document.createElement("li");
   li.innerHTML = `
-    <span class="author ${nickname ? "out" : "self"}">
+  <span class="author ${nickname ? "out" : "self"}">
     ${nickname ? nickname : "me"}:</span> ${text}
     `;
   messages.appendChild(li);
@@ -28,3 +28,6 @@ export const handleNewMsg = ({ message, nickname }) =>
 if (sendMsg) {
   sendMsg.addEventListener("submit", handleMsgSubmit);
 }
+
+export const disableChat = () => (sendMsg.style.display = "none");
+export const enableChat = () => (sendMsg.style.display = "flex");
